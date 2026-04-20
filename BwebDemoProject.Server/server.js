@@ -42,8 +42,8 @@ dotenv.config();
 
 global.__basedir = __dirname;
 
-// Create log directory if it doesn't exist
-if (!fs.existsSync("log")) {
+// Create log directory if it doesn't exist (skip on Vercel - read-only filesystem)
+if (process.env.VERCEL !== "1" && !fs.existsSync("log")) {
   fs.mkdirSync("log");
 }
 
@@ -67,6 +67,13 @@ function logError(error) {
     message: error?.message,
     stack: error?.stack,
   };
+
+  // On Vercel, just log to console (read-only filesystem)
+  if (process.env.VERCEL === "1") {
+    console.error("[ERROR LOG]", JSON.stringify(filedata));
+    return;
+  }
+
   try {
     let writecontent = [];
     if (fs.existsSync("log/error.html")) {
@@ -75,7 +82,6 @@ function logError(error) {
         try {
           writecontent = JSON.parse(filedata);
         } catch {
-          // If parsing fails, start with empty array
           writecontent = [];
         }
       }
