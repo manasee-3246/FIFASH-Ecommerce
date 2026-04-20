@@ -19,14 +19,36 @@ export const CartProvider = ({ children }) => {
   // When user logs in, sync local cart to remote backend and fetch merged result
   useEffect(() => {
     if (user && token) {
-      syncCartWithBackend();
+      fetchCartFromBackend();
     }
   }, [user, token]);
+
+  const fetchCartFromBackend = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/cart`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      const data = await response.json();
+      if (data.success && data.data && data.data.items) {
+        const formattedCart = data.data.items
+          .filter(item => item.product)
+          .map(item => ({
+            ...item.product,
+            quantity: item.quantity
+          }));
+        setCart(formattedCart);
+      }
+    } catch (err) {
+      console.error("Failed to fetch cart from backend:", err);
+    }
+  };
 
   const syncCartWithBackend = async () => {
     try {
       const localItems = JSON.parse(localStorage.getItem("cart")) || [];
-      const response = await fetch("http://localhost:7002/api/v1/cart/sync", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/cart/sync`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -63,7 +85,7 @@ export const CartProvider = ({ children }) => {
     // 2. Sync to Backend if logged in
     if (user && token) {
       try {
-        await fetch("http://localhost:7002/api/v1/cart/add", {
+        await fetch(`${import.meta.env.VITE_API_URL}/api/v1/cart/add`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -82,7 +104,7 @@ export const CartProvider = ({ children }) => {
 
     if (user && token) {
       try {
-        await fetch(`http://localhost:7002/api/v1/cart/remove/${id}`, {
+        await fetch(`${import.meta.env.VITE_API_URL}/api/v1/cart/remove/${id}`, {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${token}`
@@ -102,7 +124,7 @@ export const CartProvider = ({ children }) => {
 
     if (user && token) {
       try {
-        await fetch("http://localhost:7002/api/v1/cart/update", {
+        await fetch(`${import.meta.env.VITE_API_URL}/api/v1/cart/update`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

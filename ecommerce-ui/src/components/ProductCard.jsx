@@ -19,7 +19,7 @@ function ProductCard({ product }) {
       !imagePath.startsWith("https://") &&
       !imagePath.startsWith("blob:")
     ) {
-      finalUrl = `http://localhost:7002/uploads/${imagePath}`;
+      finalUrl = `${import.meta.env.VITE_API_URL}/uploads/${imagePath}`;
     }
 
     // Safety: only encode the part after the protocol to avoid double encoding http://

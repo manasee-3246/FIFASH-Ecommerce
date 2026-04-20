@@ -21,7 +21,7 @@ function Register() {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const response = await fetch("http://localhost:7002/api/v1/companies/public/settings");
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/companies/public/settings`);
         const data = await response.json();
         if (data.isOk) {
           setIsOtpRequired(data.data.isEmailVerificationRequired);
@@ -42,7 +42,7 @@ function Register() {
     setError("");
     setMessage("");
     try {
-      const response = await fetch("http://localhost:7002/api/v1/otp/send", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/otp/send`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: formData.email, purpose: "registration" }),
@@ -69,7 +69,7 @@ function Register() {
     setError("");
     setMessage("");
     try {
-      const response = await fetch("http://localhost:7002/api/v1/otp/verify", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/otp/verify`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: formData.email, otp }),
@@ -102,7 +102,7 @@ function Register() {
     setFieldErrors({});
 
     try {
-      const response = await fetch("http://localhost:7002/api/v1/auth/register", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

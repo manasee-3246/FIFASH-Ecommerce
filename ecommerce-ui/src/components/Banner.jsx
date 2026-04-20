@@ -11,7 +11,7 @@ function Banner() {
 
   const fetchBanners = async () => {
     try {
-      const res = await axios.get("http://localhost:7002/api/v1/banner/all");
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/banner/all`);
       // Filter out active banners that have a valid uploaded image (ignores broken old records)
       const activeBanners = res.data.filter((b) => b.isActive && b.image);
       setBanners(activeBanners);
@@ -49,7 +49,7 @@ function Banner() {
     >
       {banners.map((banner, index) => {
         const src = banner.image || banner.bannerImage;
-        let validSrc = src ? (src.startsWith("http") ? src : `http://localhost:7002/${src}`) : "";
+        let validSrc = src ? (src.startsWith("http") ? src : `${import.meta.env.VITE_API_URL}/${src}`) : "";
 
         // Safety: only encode the part after the protocol to avoid double encoding http://
         if (validSrc.startsWith("http")) {

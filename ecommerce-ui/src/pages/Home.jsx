@@ -52,7 +52,7 @@ function Home() {
     async () => {
       const res =
         await axios.get(
-          "http://localhost:7002/api/v1/products"
+          `${import.meta.env.VITE_API_URL}/api/v1/products`
         );
 
       setProducts(res.data);
@@ -65,7 +65,7 @@ function Home() {
     async () => {
       const res =
         await axios.get(
-          "http://localhost:7002/api/v1/subcategories"
+          `${import.meta.env.VITE_API_URL}/api/v1/subcategories`
         );
 
       setSubCategories(
@@ -75,7 +75,7 @@ function Home() {
 
   const fetchSizes = async () => {
     try {
-      const res = await axios.get("http://localhost:7002/api/v1/size");
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/size`);
       setSizes(res.data);
     } catch (error) {
       console.error("Failed to fetch sizes:", error);

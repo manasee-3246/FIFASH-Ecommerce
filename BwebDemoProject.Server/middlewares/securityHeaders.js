@@ -111,6 +111,7 @@ export const getCorsConfig = (allowedOrigins = []) => {
         'http://localhost:3001',
         'http://localhost:7002',
         'https://demo-test.barodaweb.net.in',
+        'https://fifash-ecommerce.onrender.com',
     ];
 
     const origins = [...new Set([...defaultOrigins, ...allowedOrigins])];
