@@ -261,7 +261,13 @@ app.use(async (err, req, res, _next) => {
 
 const port = process.env.PORT || 5000;
 
-app.listen(port, () => {
-  console.log(`✅ Server is running on port ${port}`);
-  console.log(`🔒 Security middleware enabled: Helmet, Rate Limiting, Input Validation, CSRF Protection`);
-});
+// Only start listening when running locally (not on Vercel serverless)
+if (process.env.VERCEL !== "1") {
+  app.listen(port, () => {
+    console.log(`✅ Server is running on port ${port}`);
+    console.log(`🔒 Security middleware enabled: Helmet, Rate Limiting, Input Validation, CSRF Protection`);
+  });
+}
+
+// Export for Vercel serverless functions
+export default app;

@@ -104,6 +104,14 @@ function Home() {
     setSelectedCategory(category);
     setSelectedSubCategory("All");
     setSelectedSize("All");
+
+    // Auto-scroll down to products grid when a category is clicked
+    setTimeout(() => {
+      productsRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 100);
   };
 
   const filterBySubCategory = (subCategory) => {
