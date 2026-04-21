@@ -3,6 +3,7 @@ import express from "express";
 import Banner from "../../models/Banner.js";
 
 import { upload } from "../../middlewares/upload.js";
+import { buildPublicUrl } from "../../utils/publicUrl.js";
 
 const router =
   express.Router();
@@ -54,7 +55,7 @@ router.post(
           ...req.body,
 
           image: req.file
-            ? `http://localhost:7002/uploads/${req.file.filename}`
+            ? buildPublicUrl(req, `/uploads/${req.file.filename}`)
             : "",
         });
 
@@ -89,7 +90,7 @@ router.put(
         req.file
       ) {
         updateData.image =
-          `http://localhost:7002/uploads/${req.file.filename}`;
+          buildPublicUrl(req, `/uploads/${req.file.filename}`);
       }
 
       const updatedBanner =

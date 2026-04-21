@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import {
   Card,
@@ -16,6 +16,7 @@ import {
   Table,
 } from "reactstrap";
 import BreadCrumb from "../../Components/Common/BreadCrumb";
+import { API_V1_BASE_URL, buildAssetUrl } from "../../utils/api";
 
 const FormManagement = () => {
   const [forms, setForms] = useState([]);
@@ -50,10 +51,6 @@ const FormManagement = () => {
   const [newForm, setNewForm] = useState(initialFormState);
 
   useEffect(() => {
-    fetchForms();
-  }, [currentPage, rowsPerPage, debouncedQuery]);
-
-  useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedQuery(query);
     }, 500);
@@ -65,11 +62,11 @@ const FormManagement = () => {
     setCurrentPage(1);
   }, [debouncedQuery]);
 
-  const fetchForms = async () => {
+  const fetchForms = useCallback(async () => {
     try {
       const endpoint = debouncedQuery
-        ? "http://localhost:7002/api/v1/forms/search"
-        : "http://localhost:7002/api/v1/forms";
+        ? `${API_V1_BASE_URL}/forms/search`
+        : `${API_V1_BASE_URL}/forms`;
 
       const res = await axios.get(endpoint, {
         params: {
@@ -85,7 +82,11 @@ const FormManagement = () => {
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [currentPage, debouncedQuery, rowsPerPage]);
+
+  useEffect(() => {
+    fetchForms();
+  }, [fetchForms]);
 
   const indexOfFirstRow =
     totalForms === 0 ? 0 : (currentPage - 1) * rowsPerPage;
@@ -104,7 +105,7 @@ const FormManagement = () => {
       });
 
       await axios.post(
-        "http://localhost:7002/api/v1/forms/submit",
+        `${API_V1_BASE_URL}/forms/submit`,
         formData,
         {
           headers: {
@@ -124,7 +125,7 @@ const FormManagement = () => {
 
   const deleteForm = async (id) => {
     await axios.delete(
-      `http://localhost:7002/api/v1/forms/${id}`
+      `${API_V1_BASE_URL}/forms/${id}`
     );
 
     fetchForms();
@@ -137,7 +138,7 @@ const FormManagement = () => {
 
   const updateForm = async () => {
     await axios.put(
-      `http://localhost:7002/api/v1/forms/${editData._id}`,
+      `${API_V1_BASE_URL}/forms/${editData._id}`,
       editData
     );
 
@@ -155,7 +156,7 @@ const FormManagement = () => {
       return imagePath;
     }
 
-    return `http://localhost:7002/uploads/${imagePath}`;
+    return buildAssetUrl(`/uploads/${imagePath}`);
   };
 
   return (

@@ -23,6 +23,7 @@ import {
 
 import DataTable from "react-data-table-component";
 import BreadCrumb from "../../Components/Common/BreadCrumb";
+import { API_V1_BASE_URL, buildAssetUrl } from "../../utils/api";
 
 function BannerMaster() {
   const [banners, setBanners] =
@@ -57,7 +58,7 @@ function BannerMaster() {
       try {
         const res =
           await axios.get(
-            "http://localhost:7002/api/v1/banner/all"
+            `${API_V1_BASE_URL}/banner/all`
           );
 
         setBanners(
@@ -132,13 +133,13 @@ function BannerMaster() {
 
         if (editMode) {
           await axios.put(
-            `http://localhost:7002/api/v1/banner/${editId}`,
+            `${API_V1_BASE_URL}/banner/${editId}`,
             formData,
             { headers: { "Content-Type": "multipart/form-data" } }
           );
         } else {
           await axios.post(
-            "http://localhost:7002/api/v1/banner/add",
+            `${API_V1_BASE_URL}/banner/add`,
             formData,
             { headers: { "Content-Type": "multipart/form-data" } }
           );
@@ -155,7 +156,7 @@ function BannerMaster() {
   const deleteBanner =
     async (id) => {
       await axios.delete(
-        `http://localhost:7002/api/v1/banner/${id}`
+        `${API_V1_BASE_URL}/banner/${id}`
       );
 
       fetchBanners();
@@ -196,7 +197,7 @@ function BannerMaster() {
       name: "Image",
       cell: (row) => {
         const imgSrc = row.image || row.bannerImage;
-        const validSrc = imgSrc && imgSrc.startsWith("http") ? imgSrc : `http://localhost:7002/${imgSrc || ""}`;
+        const validSrc = buildAssetUrl(imgSrc || "");
         return (
           <img
             src={validSrc}

@@ -5,9 +5,11 @@
 import axios from "axios";
 import config from "../config";
 
+export const API_URL = config.api.API_URL;
+
 // Create axios instance with base configuration
 const api = axios.create({
-    baseURL: config.api.API_URL,
+    baseURL: API_URL,
     timeout: 30000,
     headers: {
         "Content-Type": "application/json",

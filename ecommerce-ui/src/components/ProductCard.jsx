@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
+import { buildAssetUrl } from "../utils/assets";
 
 function ProductCard({ product }) {
   const { cart, addToCart, updateQuantity, removeFromCart } = useContext(CartContext);
@@ -12,15 +13,7 @@ function ProductCard({ product }) {
       return "https://via.placeholder.com/400x500?text=No+Image";
     }
 
-    let finalUrl = imagePath;
-
-    if (
-      !imagePath.startsWith("http://") &&
-      !imagePath.startsWith("https://") &&
-      !imagePath.startsWith("blob:")
-    ) {
-      finalUrl = `${import.meta.env.VITE_API_URL}/uploads/${imagePath}`;
-    }
+    let finalUrl = imagePath.startsWith("blob:") ? imagePath : buildAssetUrl(imagePath);
 
     // Safety: only encode the part after the protocol to avoid double encoding http://
     if (finalUrl.startsWith("http")) {

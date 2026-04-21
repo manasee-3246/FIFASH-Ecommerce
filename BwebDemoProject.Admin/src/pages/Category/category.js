@@ -18,6 +18,7 @@ import {
 import DataTable from "react-data-table-component";
 import BreadCrumb from "../../Components/Common/BreadCrumb";
 import axios from "axios";
+import { API_V1_BASE_URL } from "../../utils/api";
 
 function Category() {
   const [categories, setCategories] = useState([]);
@@ -50,7 +51,7 @@ function Category() {
 
   const fetchCategories = async () => {
     const res = await axios.get(
-      "http://localhost:7002/api/v1/categories"
+      `${API_V1_BASE_URL}/categories`
     );
 
     setCategories(res.data);
@@ -79,7 +80,7 @@ function Category() {
 
   const addCategory = async () => {
     await axios.post(
-      "http://localhost:7002/api/v1/categories/add",
+      `${API_V1_BASE_URL}/categories/add`,
       newCategory
     );
 
@@ -89,7 +90,7 @@ function Category() {
 
   const deleteCategory = async (id) => {
     await axios.delete(
-      `http://localhost:7002/api/v1/categories/${id}`
+      `${API_V1_BASE_URL}/categories/${id}`
     );
 
     fetchCategories();
@@ -108,7 +109,7 @@ function Category() {
 
   const updateCategory = async () => {
     await axios.put(
-      `http://localhost:7002/api/v1/categories/${editId}`,
+      `${API_V1_BASE_URL}/categories/${editId}`,
       newCategory
     );
 

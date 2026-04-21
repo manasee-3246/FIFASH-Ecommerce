@@ -106,15 +106,24 @@ export const additionalSecurityHeaders = (req, res, next) => {
  * @returns {Object} CORS configuration object
  */
 export const getCorsConfig = (allowedOrigins = []) => {
+    const envOrigins = (process.env.ALLOWED_ORIGINS || "")
+        .split(",")
+        .map((origin) => origin.trim())
+        .filter(Boolean);
+
     const defaultOrigins = [
         'http://localhost:3000',
         'http://localhost:3001',
+        'http://localhost:5173',
         'http://localhost:7002',
         'https://demo-test.barodaweb.net.in',
         'https://fifash-ecommerce.onrender.com',
+        'https://fifash-ecommerce-4.onrender.com',
+        'https://fifash-ecommerce-admin.onrender.com',
+        'https://fifash-ecommerce-admin-4.onrender.com',
     ];
 
-    const origins = [...new Set([...defaultOrigins, ...allowedOrigins])];
+    const origins = [...new Set([...defaultOrigins, ...envOrigins, ...allowedOrigins])];
 
     return {
         origin: (origin, callback) => {

@@ -17,6 +17,7 @@ import {
 } from "reactstrap";
 import DataTable from "react-data-table-component";
 import BreadCrumb from "../../Components/Common/BreadCrumb";
+import { API_V1_BASE_URL, buildAssetUrl } from "../../utils/api";
 
 function Product() {
   const [products, setProducts] = useState([]);
@@ -59,7 +60,7 @@ function Product() {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get("http://localhost:7002/api/v1/products");
+      const res = await axios.get(`${API_V1_BASE_URL}/products`);
       setProducts(res.data);
       setFilteredProducts(res.data);
     } catch (error) {
@@ -69,7 +70,7 @@ function Product() {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get("http://localhost:7002/api/v1/categories");
+      const res = await axios.get(`${API_V1_BASE_URL}/categories`);
       setCategories(res.data);
     } catch (error) {
       console.log(error);
@@ -78,7 +79,7 @@ function Product() {
 
   const fetchSubCategories = async () => {
     try {
-      const res = await axios.get("http://localhost:7002/api/v1/subcategories");
+      const res = await axios.get(`${API_V1_BASE_URL}/subcategories`);
       setSubCategories(res.data);
     } catch (error) {
       console.log(error);
@@ -87,7 +88,7 @@ function Product() {
 
   const fetchSizes = async () => {
     try {
-      const res = await axios.get("http://localhost:7002/api/v1/size");
+      const res = await axios.get(`${API_V1_BASE_URL}/size`);
       setSizes(res.data);
     } catch (error) {
       console.log(error);
@@ -134,7 +135,7 @@ function Product() {
       formData.append("size", newProduct.size);
       formData.append("image", newProduct.image);
 
-      await axios.post("http://localhost:7002/api/v1/products/add", formData, {
+      await axios.post(`${API_V1_BASE_URL}/products/add`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -147,7 +148,7 @@ function Product() {
 
   const deleteProduct = async (id) => {
     try {
-      await axios.delete(`http://localhost:7002/api/v1/products/${id}`);
+      await axios.delete(`${API_V1_BASE_URL}/products/${id}`);
       fetchProducts();
     } catch (error) {
       console.log(error);
@@ -181,7 +182,7 @@ function Product() {
         formData.append("image", newProduct.image);
       }
 
-      await axios.put(`http://localhost:7002/api/v1/products/${editId}`, formData, {
+      await axios.put(`${API_V1_BASE_URL}/products/${editId}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -202,7 +203,7 @@ function Product() {
       name: "Image",
       cell: (row) => (
         <img
-          src={row.image}
+          src={buildAssetUrl(row.image)}
           alt="product"
           style={{
             width: "60px",

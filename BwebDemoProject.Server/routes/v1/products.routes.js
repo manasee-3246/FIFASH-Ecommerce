@@ -3,6 +3,7 @@ const router = express.Router();
 
 import Product from "../../models/Product.js";
 import { upload } from "../../middlewares/upload.js";
+import { buildPublicUrl } from "../../utils/publicUrl.js";
 
 
 // GET PRODUCTS
@@ -18,7 +19,7 @@ router.post("/products/add", upload.single("image"), async (req, res) => {
     const product = new Product({
       ...req.body,
       image: req.file
-        ? `http://localhost:7002/uploads/${req.file.filename}`
+        ? buildPublicUrl(req, `/uploads/${req.file.filename}`)
         : req.body.image || "",
     });
 
@@ -52,7 +53,7 @@ router.put("/products/:id", upload.single("image"), async (req, res) => {
     };
 
     if (req.file) {
-      updateData.image = `http://localhost:7002/uploads/${req.file.filename}`;
+      updateData.image = buildPublicUrl(req, `/uploads/${req.file.filename}`);
     }
 
     const updatedProduct = await Product.findByIdAndUpdate(

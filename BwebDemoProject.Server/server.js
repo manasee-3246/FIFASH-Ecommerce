@@ -94,6 +94,7 @@ function logError(error) {
 }
 
 const app = express();
+app.set("trust proxy", 1);
 let databasestatus = "In-Progress";
 
 // ============ SECURITY MIDDLEWARE (Apply FIRST) ============

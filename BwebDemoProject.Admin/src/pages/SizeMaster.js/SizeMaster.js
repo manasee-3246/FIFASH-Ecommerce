@@ -18,6 +18,7 @@ import {
 } from "reactstrap";
 import DataTable from "react-data-table-component";
 import BreadCrumb from "../../Components/Common/BreadCrumb";
+import { API_V1_BASE_URL } from "../../utils/api";
 
 function SizeMaster() {
   const [sizes, setSizes] = useState([]);
@@ -48,7 +49,7 @@ function SizeMaster() {
 
   const fetchSizes = async () => {
     try {
-      const res = await axios.get("http://localhost:7002/api/v1/size");
+      const res = await axios.get(`${API_V1_BASE_URL}/size`);
       setSizes(res.data);
       setFilteredSizes(res.data);
     } catch (error) {
@@ -87,7 +88,7 @@ function SizeMaster() {
 
   const addSize = async () => {
     try {
-      await axios.post("http://localhost:7002/api/v1/size/add", formData);
+      await axios.post(`${API_V1_BASE_URL}/size/add`, formData);
       fetchSizes();
       toggleModal();
     } catch (error) {
@@ -97,7 +98,7 @@ function SizeMaster() {
 
   const deleteSize = async (id) => {
     try {
-      await axios.delete(`http://localhost:7002/api/v1/size/${id}`);
+      await axios.delete(`${API_V1_BASE_URL}/size/${id}`);
       fetchSizes();
     } catch (error) {
       console.log(error);
@@ -118,7 +119,7 @@ function SizeMaster() {
 
   const updateSize = async () => {
     try {
-      await axios.put(`http://localhost:7002/api/v1/size/${editId}`, formData);
+      await axios.put(`${API_V1_BASE_URL}/size/${editId}`, formData);
       fetchSizes();
       toggleModal();
     } catch (error) {

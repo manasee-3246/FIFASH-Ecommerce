@@ -32,7 +32,7 @@ function Cart() {
             <div style={{ flex: "2", minWidth: "300px" }}>
               {cart.map((item) => (
                 <div key={item._id} style={{ display: "flex", gap: "20px", backgroundColor: "#fff", padding: "20px", borderRadius: "10px", marginBottom: "15px", boxShadow: "0 4px 6px rgba(0,0,0,0.05)" }}>
-                  <img src={item.image.startsWith("http") ? item.image : `${import.meta.env.VITE_API_URL}/uploads/${item.image}`} alt={item.name} style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "5px" }} />
+                  <img src={buildAssetUrl(item.image)} alt={item.name} style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "5px" }} />
 
                   <div style={{ flex: 1 }}>
                     <h4 style={{ margin: "0 0 10px 0", color: "#333" }}>{item.name}</h4>
@@ -84,3 +84,4 @@ function Cart() {
 }
 
 export default Cart;
+import { buildAssetUrl } from "../utils/assets";

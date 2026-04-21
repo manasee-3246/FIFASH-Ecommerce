@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { buildAssetUrl } from "../utils/assets";
 
 function Banner() {
   const [banners, setBanners] = useState([]);
@@ -49,7 +50,7 @@ function Banner() {
     >
       {banners.map((banner, index) => {
         const src = banner.image || banner.bannerImage;
-        let validSrc = src ? (src.startsWith("http") ? src : `${import.meta.env.VITE_API_URL}/${src}`) : "";
+        let validSrc = buildAssetUrl(src || "");
 
         // Safety: only encode the part after the protocol to avoid double encoding http://
         if (validSrc.startsWith("http")) {

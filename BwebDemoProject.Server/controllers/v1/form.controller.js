@@ -1,11 +1,14 @@
 import Form from "../../models/FormModel.js";
+import { buildPublicUrl } from "../../utils/publicUrl.js";
 
 // SUBMIT FORM
 export const submitForm = async (req, res) => {
   try {
     const form = new Form({
       ...req.body,
-      image: req.file && `http://localhost:7002/uploads/${req.file.filename}`,
+      image: req.file
+        ? buildPublicUrl(req, `/uploads/${req.file.filename}`)
+        : "",
     });
 
     await form.save();
@@ -116,7 +119,7 @@ export const updateForm = async (req, res) => {
     };
 
     if (req.file) {
-      updateData.image = `http://localhost:7002/uploads/${req.file.filename}`;
+      updateData.image = buildPublicUrl(req, `/uploads/${req.file.filename}`);
     }
 
     const updated = await Form.findByIdAndUpdate(

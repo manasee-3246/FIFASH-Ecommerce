@@ -18,7 +18,7 @@ const VerticalLayout = (props) => {
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
         const initMenu = () => {
-            const pathName = process.env.REACT_APP_API_URL_COFFEE + path;
+            const pathName = path;
             const ul = document.getElementById("navbar-nav");
             const items = ul.getElementsByTagName("a");
             let itemsArray = [...items];

@@ -23,6 +23,7 @@ import {
 
 import DataTable from "react-data-table-component";
 import BreadCrumb from "../../Components/Common/BreadCrumb";
+import { API_V1_BASE_URL } from "../../utils/api";
 
 function SubCategory() {
   const [subCategories, setSubCategories] =
@@ -79,7 +80,7 @@ function SubCategory() {
   const fetchSubCategories =
     async () => {
       const res = await axios.get(
-        "http://localhost:7002/api/v1/subcategories"
+        `${API_V1_BASE_URL}/subcategories`
       );
 
       setSubCategories(res.data);
@@ -91,7 +92,7 @@ function SubCategory() {
   const fetchCategories =
     async () => {
       const res = await axios.get(
-        "http://localhost:7002/api/v1/categories"
+        `${API_V1_BASE_URL}/categories`
       );
 
       setCategories(res.data);
@@ -115,7 +116,7 @@ function SubCategory() {
   const addSubCategory =
     async () => {
       await axios.post(
-        "http://localhost:7002/api/v1/subcategories/add",
+        `${API_V1_BASE_URL}/subcategories/add`,
         newSubCategory
       );
 
@@ -127,7 +128,7 @@ function SubCategory() {
   const deleteSubCategory =
     async (id) => {
       await axios.delete(
-        `http://localhost:7002/api/v1/subcategories/${id}`
+        `${API_V1_BASE_URL}/subcategories/${id}`
       );
 
       fetchSubCategories();
@@ -151,7 +152,7 @@ function SubCategory() {
   const updateSubCategory =
     async () => {
       await axios.put(
-        `http://localhost:7002/api/v1/subcategories/${editId}`,
+        `${API_V1_BASE_URL}/subcategories/${editId}`,
         newSubCategory
       );
 
